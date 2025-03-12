@@ -1,9 +1,8 @@
 package com.meddle.bloggdUp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
 
@@ -23,9 +22,10 @@ public class Post {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    private Long blogId;
-
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "blog_id")
+    @JsonBackReference
+    private Blog blog;
 
     @Column(name="active", nullable = false, columnDefinition="BOOLEAN NOT NULL DEFAULT TRUE")
     private boolean active = true;
@@ -33,14 +33,12 @@ public class Post {
 
 
     // constructor
-    public Post(Long id, String title, String body, String imagePath, LocalDateTime createdAt, Long blogId, Long userId) {
-        this.id = id;
+    public Post(String title, String body, String imagePath, LocalDateTime createdAt, Blog blog) {
         this.title = title;
         this.body = body;
         this.imagePath = imagePath;
         this.createdAt = createdAt;
-        this.blogId = blogId;
-        this.userId = userId;
+        this.blog = blog;
     }
 
     public Post() {
@@ -87,20 +85,12 @@ public class Post {
         this.createdAt = createdAt;
     }
 
-    public Long getBlogId() {
-        return blogId;
+    public Blog getBlog() {
+        return blog;
     }
 
-    public void setBlogId(Long blogId) {
-        this.blogId = blogId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setBlog(Blog blog) {
+        this.blog = blog;
     }
 
     public boolean isActive() {

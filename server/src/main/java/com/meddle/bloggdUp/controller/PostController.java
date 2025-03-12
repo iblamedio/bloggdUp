@@ -29,9 +29,9 @@ public class PostController {
         return new ResponseEntity<>(service.getPost(postId), HttpStatus.OK);
     }
 
-    // delete post - POST /api/post/delete/{post_id}
-    @PostMapping("/delete/{post_id}")
-    public ResponseEntity<Post> delete(@PathVariable(value = "post_id") Long postId) {
+    // delete post - POST /api/post/delete
+    @PostMapping("/delete")
+    public ResponseEntity<Post> delete(@RequestBody Long postId) {
         return new ResponseEntity<>(service.deletePost(postId), HttpStatus.OK);
     }
 
