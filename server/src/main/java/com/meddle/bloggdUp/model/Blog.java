@@ -2,12 +2,15 @@ package com.meddle.bloggdUp.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "blogs")
-public class Blog {
+public class Blog implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +32,10 @@ public class Blog {
     private boolean active = true;
 
     // All args constructor
-    public Blog(String login, String password, String name, List<Post> posts) {
+    public Blog(String login, String password, String name) {
         this.login = login;
         this.password = password;
         this.name = name;
-        this.posts = posts;
     }
 
     // No args constructor
@@ -57,10 +59,6 @@ public class Blog {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {
@@ -90,4 +88,40 @@ public class Blog {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+
 }
